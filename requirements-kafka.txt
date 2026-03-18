@@ -1,0 +1,19 @@
+# Kafka and streaming dependencies for Digital Pulse
+
+# Kafka
+confluent-kafka==2.4.0
+
+# YAML configuration
+pyyaml==6.0.1
+
+# Async support
+aiofiles==23.2.1
+
+# Serialization
+msgpack==1.0.7  # Optional, for alternative serialization
+
+# Monitoring (optional)
+prometheus-client==0.19.0
+
+# For Avro support (optional)
+# avro-python3==1.11.0

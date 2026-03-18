@@ -1,0 +1,141 @@
+# Kafka Configuration - Digital Pulse Stream Architecture
+# Environment variables override these defaults: KAFKA_BOOTSTRAP_SERVERS, KAFKA_SECURITY_PROTOCOL, etc.
+
+kafka:
+  # Bootstrap servers (comma-separated)
+  bootstrap_servers: "localhost:9092"
+  
+  # Security settings
+  security_protocol: "PLAINTEXT"  # Options: PLAINTEXT, SASL_PLAINTEXT, SASL_SSL, SSL
+  sasl_mechanism: "PLAIN"  # Options: PLAIN, SCRAM-SHA-256, SCRAM-SHA-512
+  sasl_username: ""  # Set via KAFKA_SASL_USERNAME env var
+  sasl_password: ""  # Set via KAFKA_SASL_PASSWORD env var
+
+topics:
+  # Raw data ingestion topic
+  raw_data:
+    name: "raw_data"
+    partitions: 3
+    replication_factor: 1
+    retention_ms: 604800000  # 7 days
+    compression_type: "snappy"
+
+  # Processed results topic
+  processed_results:
+    name: "processed_results"
+    partitions: 3
+    replication_factor: 1
+    retention_ms: 604800000  # 7 days
+    compression_type: "snappy"
+
+  # Dead letter topic for failed messages
+  dlq:
+    name: "dlq"
+    partitions: 1
+    replication_factor: 1
+    retention_ms: 2592000000  # 30 days
+
+producer:
+  # Client ID for producer
+  client_id: "digital-pulse-producer"
+  
+  # Batch size in bytes
+  batch_size: 16384
+  
+  # Linger time in ms (batch accumulation time)
+  linger_ms: 100
+  
+  # Compression type
+  compression_type: "snappy"
+  
+  # Acks setting: all, 1, 0
+  acks: "all"
+  
+  # Retry configuration
+  retries: 3
+  retry_backoff_ms: 100
+
+consumer:
+  # Consumer group ID
+  group_id: "digital-pulse-processors"
+  
+  # Auto-offset reset: earliest, latest, none
+  auto_offset_reset: "earliest"
+  
+  # Enable auto-commit
+  enable_auto_commit: false
+  
+  # Auto-commit interval (only if enable_auto_commit=true)
+  auto_commit_interval_ms: 5000
+  
+  # Session timeout
+  session_timeout_ms: 30000
+  
+  # Max poll records (batch size from broker)
+  max_poll_records: 100
+  
+  # Poll timeout in ms
+  poll_timeout_ms: 5000
+
+# Circuit Breaker pattern configuration
+circuit_breaker:
+  # Failure threshold before opening circuit (0-1)
+  failure_threshold: 0.5
+  
+  # Minimum number of requests to evaluate threshold
+  min_requests: 5
+  
+  # Timeout for circuit breaker state transitions (seconds)
+  timeout_seconds: 60
+  
+  # Maximum failures before opening
+  max_consecutive_failures: 3
+
+# Fallback configuration
+fallback:
+  # Enable fallback to filesystem when Kafka unavailable
+  enabled: true
+  
+  # Fallback directory for queued messages
+  queue_directory: "./data/kafka_fallback_queue"
+  
+  # Retry frequency for processing queued messages (seconds)
+  retry_interval_seconds: 30
+  
+  # Maximum messages to keep in fallback queue
+  max_queue_size: 10000
+  
+  # Batch processing size from fallback queue
+  batch_size: 50
+
+# Serialization settings
+serialization:
+  # Format: json, avro, msgpack
+  format: "json"
+  
+  # Avro schema registry (if format=avro)
+  schema_registry_url: ""
+  
+  # Enable schema validation
+  validate_schema: true
+
+# Monitoring and logging
+monitoring:
+  # Enable metrics collection
+  metrics_enabled: true
+  
+  # Metrics export interval (seconds)
+  metrics_interval_seconds: 60
+  
+  # Log level: DEBUG, INFO, WARNING, ERROR
+  log_level: "INFO"
+  
+  # Log format
+  log_format: "json"  # json or text
+
+retry:
+  # Retry policy for transient failures
+  max_retries: 3
+  initial_backoff_ms: 100
+  backoff_multiplier: 2
+  max_backoff_ms: 10000
