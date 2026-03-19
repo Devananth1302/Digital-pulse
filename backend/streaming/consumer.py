@@ -273,7 +273,7 @@ class KafkaConsumerWrapper:
                 "original_offset": original_msg.offset(),
                 "error": error,
                 "timestamp": datetime.now(timezone.utc).isoformat(),
-                "value": msg.value().decode() if msg.value() else None,
+                "value": original_msg.value().decode() if original_msg.value() else None,
             }
 
             self.producer.produce(dlq_payload)

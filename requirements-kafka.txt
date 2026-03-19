@@ -16,4 +16,4 @@ msgpack==1.0.7  # Optional, for alternative serialization
 prometheus-client==0.19.0
 
 # For Avro support (optional)
-# avro-python3==1.11.0
+avro-python3==1.10.2
