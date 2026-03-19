@@ -1,0 +1,21 @@
+# Additional requirements for processors module
+# Add to existing requirements.txt or install separately
+
+# Zero-Shot Classification (for hierarchical clustering)
+transformers>=4.42.0      # Use pre-built wheels for Python 3.13 compatibility
+torch>=2.6.0              # PyTorch (required by transformers)
+
+# LDA and topic modeling (optional, for advanced sub-topic detection)
+# Note: scikit-learn is already in requirements.txt - remove duplicates to avoid compilation
+gensim==4.4.0             # Alternative LDA implementation (Python 3.13 compatible)
+
+# Data processing
+# Note: pandas and numpy are already in requirements.txt
+
+# Async support
+aiofiles==23.2.1          # Already in requirements-kafka.txt
+
+# CLI utilities
+click==8.1.0              # Command-line interface
+
+# Note: confluent-kafka already in requirements-kafka.txt
