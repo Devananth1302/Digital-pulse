@@ -10,6 +10,7 @@ interface StatBadgeProps {
   unit?: string;
   trend?: 'up' | 'down' | 'stable';
   color?: 'cyan' | 'purple' | 'pink' | 'green' | 'orange';
+  variant?: 'cyan' | 'purple' | 'pink' | 'green' | 'orange';
   className?: string;
 }
 
@@ -39,8 +40,11 @@ export const StatBadge = ({
   unit,
   trend,
   color = 'cyan',
+  variant,
   className,
 }: StatBadgeProps) => {
+  // Use variant if provided, otherwise use color
+  const finalColor = (variant || color) as 'cyan' | 'purple' | 'pink' | 'green' | 'orange';
   return (
     <div
       className={cn(
@@ -52,7 +56,7 @@ export const StatBadge = ({
         <div className="flex-1">
           <p className="text-xs uppercase tracking-widest text-gray-400 mb-2">{label}</p>
           <div className="flex items-baseline gap-2">
-            <span className={cn('text-3xl font-bold bg-gradient-to-r bg-clip-text text-transparent', colorMap[color])}>
+            <span className={cn('text-3xl font-bold bg-gradient-to-r bg-clip-text text-transparent', colorMap[finalColor])}>
               {value}
             </span>
             {unit && <span className="text-sm text-gray-400">{unit}</span>}

@@ -4,6 +4,12 @@
  */
 
 export interface TrendingSignal {
+  post_id?: string;                    // NEW: Post identifier
+  title?: string;                      // NEW: Post title
+  content?: string;                    // NEW: Post content preview
+  timestamp?: string | Date;           // NEW: Post timestamp
+  source?: string;                     // NEW: Data source
+  
   signal_type: 'trending' | 'sentiment_spike' | 'emerging';
   industry: string;
   industry_score?: number;
@@ -19,6 +25,9 @@ export interface TrendingSignal {
   velocity?: number;
   momentum?: string;
   sentiment?: number;
+  likes?: number;                      // NEW: Engagement metrics
+  shares?: number;                     // NEW: Engagement metrics
+  comments?: number;                   // NEW: Engagement metrics
 }
 
 export interface AnalyticsState {
